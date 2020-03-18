@@ -52,10 +52,13 @@ class Tree:
         print(data)
         self.data.add_data(data)
         if len(data) > 1:
+            bound = len(data)//2
+            if len(data)%2 != 0:
+                bound += 1
             self.left = Tree()
-            self.data.add_data(self.left._add_data(data[:len(data)//2]), "left")
+            self.data.add_data(self.left._add_data(data[:bound]), "left")
             self.right = Tree()
-            self.data.add_data(self.right._add_data(data[len(data)//2:]), "right")
+            self.data.add_data(self.right._add_data(data[bound:]), "right")
         self.data.generate_hash()
         return self.data.hash
 
@@ -68,4 +71,4 @@ class Tree:
 mytree = Tree()
 mytree.add_data(['A', 'B', 'C', 'D', 'E', 'F', 'G'])
 mytree.data.generate_hash()
-mytree.print()
+#  mytree.print()
