@@ -63,20 +63,6 @@ class Tree:
         print(data)
         self._add_data(data)
 
-
-def recurse(elements):
-    print(elements)
-    if len(elements) > 1:
-        recurse(elements[:len(elements)//2])
-        recurse(elements[len(elements)//2:])
-
-
-def ascii_tree(elements):
-    if len(elements) % 2 != 0:
-        elements += elements[-1]  # Pad with final element to make even
-    recurse(elements)
-
-
 # ascii_tree(['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'])
 
 mytree = Tree()
