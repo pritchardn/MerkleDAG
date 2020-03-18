@@ -69,4 +69,3 @@ class Tree:
 mytree = Tree()
 mytree.add_data(['A', 'B', 'C', 'D', 'E', 'F', 'G'])
 mytree.data.generate_hash()
-#  mytree.print()
