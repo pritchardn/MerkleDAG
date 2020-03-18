@@ -36,8 +36,3 @@ class MerkleTree:
     def add_data(self, data):  # Assumes data is list
         print(data)
         self._add_data(data)
-
-
-mytree = MerkleTree()
-mytree.add_data(['A', 'B', 'C', 'D', 'E', 'F', 'G'])
-mytree.data.generate_hash()
