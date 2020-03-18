@@ -15,15 +15,15 @@ class Block(object):
         self.hash_algorithm = hashes.SHA256()
         self.hash = None
 
-    def add_data(self, key, value):
-        self.data[key] = value
+    def add_data(self, value, key="data"):
+        self.data[key] = repr(value)
 
     def get_data(self):
         return self.data
 
     def generate_hash(self):
         self.digest = hashes.Hash(self.hash_algorithm, backend=default_backend())
-        self.data_serial = json.dumps(self.data, sort_keys=True)
+        self.data_serial = repr(self.data)  # json.dumps(self.data, sort_keys=True)
         self.digest.update(self.data_serial.encode(encoding="utf-8"))
         self.hash = self.digest.finalize()
         self.digest = None
@@ -41,18 +41,29 @@ class Tree:
         self.right = None
         self.data = Block()
 
-    def update_left(self, left):
-        self.left = left
-
-    def update_right(self, right):
-        self.right = right
-
     def print(self):
         self.data.print()
         if type(self.left) == Tree:
             self.left.print()
         if type(self.right) == Tree:
             self.right.print()
+
+    def _add_data(self, data):
+        print(data)
+        self.data.add_data(data)
+        if len(data) > 1:
+            self.left = Tree()
+            self.data.add_data(self.left._add_data(data[:len(data)//2]), "left")
+            self.right = Tree()
+            self.data.add_data(self.right._add_data(data[len(data)//2:]), "right")
+        self.data.generate_hash()
+        return self.data.hash
+
+    def add_data(self, data):  # Assumes data is list
+        print(data)
+        if len(data) % 2 != 0:
+            data += data[-1]  # Pad with final element
+        self._add_data(data)
 
 
 def recurse(elements):
@@ -71,7 +82,6 @@ def ascii_tree(elements):
 # ascii_tree(['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'])
 
 mytree = Tree()
-mytree.data.add_data('txList', ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'])
-mytree.data.add_data('rxList', ['yummy'])
+mytree.add_data(['A', 'B', 'C', 'D', 'E', 'F', 'G'])
 mytree.data.generate_hash()
 mytree.print()
