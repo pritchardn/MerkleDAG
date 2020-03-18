@@ -10,21 +10,23 @@ import json
 class Block(object):
     def __init__(self):
         self.data = {}
-        self.digest = hashes.Hash(hashes.SHA256(), backend=default_backend())
+        self.data_serial = None
+        self.digest = None
+        self.hash_algorithm = hashes.SHA256()
         self.hash = None
 
     def add_data(self, key, value):
-        self.data[key] = ''.join([str(elem) for elem in value]).encode()
-        # TODO: This is yucky come up with something better
-        self.digest.update(self.data[key])
-        self.generate_hash()
+        self.data[key] = value
 
     def get_data(self):
         return self.data
 
     def generate_hash(self):
+        self.digest = hashes.Hash(self.hash_algorithm, backend=default_backend())
+        self.data_serial = json.dumps(self.data, sort_keys=True)
+        self.digest.update(self.data_serial.encode(encoding="utf-8"))
         self.hash = self.digest.finalize()
-        self.digest = hashes.Hash(hashes.SHA256(), backend=default_backend())
+        self.digest = None
 
     def print(self):
         for element in self.data:
@@ -71,5 +73,5 @@ def ascii_tree(elements):
 mytree = Tree()
 mytree.data.add_data('txList', ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'])
 mytree.data.add_data('rxList', ['yummy'])
+mytree.data.generate_hash()
 mytree.print()
-
