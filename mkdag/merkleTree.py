@@ -61,8 +61,6 @@ class Tree:
 
     def add_data(self, data):  # Assumes data is list
         print(data)
-        if len(data) % 2 != 0:
-            data += data[-1]  # Pad with final element
         self._add_data(data)
 
 
