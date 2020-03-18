@@ -53,7 +53,7 @@ class Tree:
         self.data.add_data(data)
         if len(data) > 1:
             bound = len(data)//2
-            if len(data)%2 != 0:
+            if len(data) % 2 != 0:
                 bound += 1
             self.left = Tree()
             self.data.add_data(self.left._add_data(data[:bound]), "left")
@@ -66,7 +66,6 @@ class Tree:
         print(data)
         self._add_data(data)
 
-# ascii_tree(['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'])
 
 mytree = Tree()
 mytree.add_data(['A', 'B', 'C', 'D', 'E', 'F', 'G'])
