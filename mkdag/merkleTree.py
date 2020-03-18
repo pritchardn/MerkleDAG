@@ -4,7 +4,6 @@
 
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes
-import json
 
 
 class Block(object):
