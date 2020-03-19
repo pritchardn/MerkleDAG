@@ -1,4 +1,4 @@
-from Block import Block
+from Block import Block, block_compare
 
 
 class TestBlock:
@@ -21,3 +21,22 @@ class TestBlock:
 
     def test_generate_hash(self):
         assert True
+
+
+class TestComparison:
+    x = Block()
+    y = Block()
+    z = Block()
+    x.add_data("help")
+    y.add_data("help")
+    z.add_data("helP")
+    x.generate_hash()
+    y.generate_hash()
+    z.generate_hash()
+
+    #  TODO: Request feedback on style vs. other tests written
+    def test_block_compare(self):
+        assert block_compare(self.x, self.y)
+        assert block_compare(self.y, self.x)
+        assert not block_compare(self.x, self.z)
+        assert not block_compare(self.z, self.x)
