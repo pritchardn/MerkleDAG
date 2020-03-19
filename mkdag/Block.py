@@ -30,3 +30,10 @@ class Block(object):
         for element in self.data:
             print(str(element) + " " + str(self.data.get(element)))
         print(self.hash)
+
+
+def block_compare(x: Block, y: Block):
+    if x.hash != y.hash:
+        return False
+    else:
+        return True
