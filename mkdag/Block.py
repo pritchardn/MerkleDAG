@@ -32,7 +32,7 @@ class Block(object):
         print(self.hash)
 
 
-def block_compare(x: Block, y: Block):
+def block_compare(x: Block, y: Block):  # type hints added in Python 3.8
     if x.hash != y.hash:
         return False
     else:
