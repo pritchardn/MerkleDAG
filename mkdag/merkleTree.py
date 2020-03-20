@@ -36,3 +36,13 @@ class MerkleTree:
     def add_data(self, data):  # Assumes data is list
         print(data)
         self._add_data(data)
+
+
+def compare_mktree(x: MerkleTree, y: MerkleTree):
+    if x is None and y is None:
+        return True
+    if x is not None and y is not None:
+        return ((x.data.hash == y.data.hash) and
+                compare_mktree(x.left, y.left) and
+                compare_mktree(x.right, y.right))
+    return False
