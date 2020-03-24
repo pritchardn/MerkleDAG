@@ -32,12 +32,6 @@ class MerkleDAG(object):
                 self.children.append(child)
                 child.add_parent(self)
 
-    def add_sibling(self, sibling):
-        if type(sibling) == MerkleDAG:
-            if sibling not in self.siblings:
-                self.siblings.append(sibling)
-                sibling.add_sibling(self)
-
     def add_parent(self, parent):
         if type(parent) == MerkleDAG:
             if parent not in self.parents:
@@ -47,8 +41,6 @@ class MerkleDAG(object):
     def add_data(self, data, key="data"):  # Will directly hash data and pass this value to parents
         self.data.add_data(data, key)
         self.data.generate_hash()
-        for parent in self.parents:
-            parent.update_hashes()
 
     def update_hashes(self):
         self.child_hashes = []
