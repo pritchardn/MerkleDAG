@@ -11,7 +11,6 @@ class MerkleDAG(object):
 
     def __init__(self):
         self.parents = []
-        self.siblings = []
         self.children = []
         self.child_hashes = []
         self.data = Block()
