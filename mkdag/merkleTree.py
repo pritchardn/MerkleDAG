@@ -22,16 +22,23 @@ class MerkleTree:
 
     def _add_data(self, data):
         print(data)
-        self.data.add_data(data)
+        if self.data is None:
+            self.data.add_data(data)
+        elif self.data != data:
+            self.data.add_data(data)
+        else:
+            return self.data.hash
         if len(data) > 1:
-            bound = len(data)//2
+            bound = len(data) // 2
             if len(data) % 2 != 0:
                 bound += 1
-            self.left = MerkleTree()
-            self.left.parent = self
+            if self.left is None:
+                self.left = MerkleTree()
+                self.left.parent = self
+            if self.right is None:
+                self.right = MerkleTree()
+                self.right.parent = self
             self.data.add_data(self.left._add_data(data[:bound]), "left")
-            self.right = MerkleTree()
-            self.right.parent = self
             self.data.add_data(self.right._add_data(data[bound:]), "right")
         self.data.generate_hash()
         return self.data.hash
@@ -39,6 +46,9 @@ class MerkleTree:
     def add_data(self, data):  # Assumes data is list
         print(data)
         self._add_data(data)
+
+    def update_data(self, data):  # Assumes data is list
+        print("Help")
 
 
 def compare_mktree(x: MerkleTree, y: MerkleTree):
