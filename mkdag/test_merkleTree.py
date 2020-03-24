@@ -8,8 +8,7 @@ class TestMerkleTree:
     y.add_data(['A', 'B', 'C', 'C', 'E', 'F', 'G'])
 
     def test_add_data(self):
-        if compare_mktree(self.x, self.y):
-            assert False
+        assert not compare_mktree(self.x, self.y)
         self.y.add_data(['A', 'B', 'C', 'D', 'E', 'F', 'G'])
         assert compare_mktree(self.x, self.y)
 
