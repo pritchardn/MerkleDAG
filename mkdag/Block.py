@@ -12,19 +12,26 @@ class Block(object):
         self.digest = None
         self.hash_algorithm = hashes.SHA256()
         self.hash = None
+        self.changed = False
+
+    def is_empty(self):
+        return self.data == {}
 
     def add_data(self, value, key="data"):
+        self.changed = True
         self.data[key] = repr(value)
 
     def get_data(self):
         return self.data
 
     def generate_hash(self):
-        self.digest = hashes.Hash(self.hash_algorithm, backend=default_backend())
-        self.data_serial = repr(self.data)  # json.dumps(self.data, sort_keys=True)
-        self.digest.update(self.data_serial.encode(encoding="utf-8"))
-        self.hash = self.digest.finalize()
-        self.digest = None
+        if self.changed:
+            self.digest = hashes.Hash(self.hash_algorithm, backend=default_backend())
+            self.data_serial = repr(self.data)  # json.dumps(self.data, sort_keys=True)
+            self.digest.update(self.data_serial.encode(encoding="utf-8"))
+            self.hash = self.digest.finalize()
+            self.digest = None
+            self.changed = False
 
     def print(self):
         for element in self.data:
