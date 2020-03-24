@@ -2,10 +2,16 @@ from merkleTree import MerkleTree, compare_mktree
 
 
 class TestMerkleTree:
+    x = MerkleTree()
+    y = MerkleTree()
+    x.add_data(['A', 'B', 'C', 'D', 'E', 'F', 'G'])
+    y.add_data(['A', 'B', 'C', 'C', 'E', 'F', 'G'])
+
     def test_add_data(self):
-        mTree = MerkleTree()
-        mTree.add_data(['A', 'B', 'C', 'D', 'E', 'F', 'G'])
-        assert True
+        if compare_mktree(self.x, self.y):
+            assert False
+        self.y.add_data(['A', 'B', 'C', 'D', 'E', 'F', 'G'])
+        assert compare_mktree(self.x, self.y)
 
 
 class TestCompareMKTree:
