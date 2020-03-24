@@ -7,14 +7,15 @@ class TestMerkleDAG:
     z = MerkleDAG()
 
     def reset_class_instances(self):
-        self.x = MerkleDAG()
-        self.y = MerkleDAG()
-        self.z = MerkleDAG()
+        self.x.__init__()
+        self.y.__init__()
+        self.z.__init__()
 
     def test_get_hash(self):
         assert self.x.get_hash() is None
         self.x.add_data(['A', 'B', 'C'])
         assert self.x.get_hash() is not None
+        self.reset_class_instances()
 
     def test_add_child(self):
         self.x.add_child(self.y)
@@ -49,3 +50,9 @@ class TestMerkleDAG:
         self.z.update_hashes()
         assert old_hash != self.z.get_hash()
         self.reset_class_instances()
+
+    def test_are_siblings(self):
+        self.y.add_parent(self.x)
+        self.z.add_parent(self.x)
+        assert not self.x.are_siblings(self.y)
+        assert self.y.are_siblings(self.z)

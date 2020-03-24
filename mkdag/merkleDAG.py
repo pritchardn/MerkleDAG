@@ -44,3 +44,16 @@ class MerkleDAG(object):
         for child in self.children:
             self.child_hashes.append(child.get_hash())
         self.add_data(self.child_hashes, "children")
+
+    def are_siblings(self, candidate):
+        if type(candidate) == MerkleDAG:
+            if not self.parents:
+                if not candidate.parents:  # Two roots is possible
+                    return True
+                else:  # Edge case of comparing root to child
+                    return False
+            # I know this is O(n^2) but it is accurate and deterministic
+            for parent in self.parents:
+                if parent not in candidate.parents:
+                    return False
+            return True
