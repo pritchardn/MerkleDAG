@@ -19,6 +19,7 @@ class MerkleDAG(object):
             i.print()
 
     def add_child(self, child):
+        self.hasOutgoing = True
         if type(child) == MerkleDAG:
             if child not in self.children:
                 self.children.append(child)
