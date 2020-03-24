@@ -48,3 +48,4 @@ class TestMerkleDAG:
         self.z.add_child(self.y)
         self.z.update_hashes()
         assert old_hash != self.z.get_hash()
+        self.reset_class_instances()
