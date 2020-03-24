@@ -15,7 +15,6 @@ class MerkleDAG(object):
         self.children = []
         self.child_hashes = []
         self.data = Block()
-        self.hasOutgoing = False
 
     def print(self):
         self.data.print()
@@ -26,7 +25,6 @@ class MerkleDAG(object):
         return self.data.hash
 
     def add_child(self, child):
-        self.hasOutgoing = True
         if type(child) == MerkleDAG:
             if child not in self.children:
                 self.children.append(child)
