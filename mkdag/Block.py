@@ -18,8 +18,14 @@ class Block(object):
         return self.data == {}
 
     def add_data(self, value, key="data"):
-        self.changed = True
-        self.data[key] = repr(value)
+        new_value = repr(value)
+        if key in self.data.keys():
+            if new_value != self.data.get(key):
+                self.changed = True
+                self.data[key] = new_value
+        else:
+            self.changed = True
+            self.data[key] = new_value
 
     def get_data(self):
         return self.data
