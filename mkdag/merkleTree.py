@@ -10,6 +10,7 @@ class MerkleTree:
     def __init__(self):
         self.left = None
         self.right = None
+        self.parent = None
         self.data = Block()
 
     def print(self):
@@ -27,8 +28,10 @@ class MerkleTree:
             if len(data) % 2 != 0:
                 bound += 1
             self.left = MerkleTree()
+            self.left.parent = self
             self.data.add_data(self.left._add_data(data[:bound]), "left")
             self.right = MerkleTree()
+            self.right.parent = self
             self.data.add_data(self.right._add_data(data[bound:]), "right")
         self.data.generate_hash()
         return self.data.hash
