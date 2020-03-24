@@ -34,7 +34,6 @@ class TestComparison:
     y.generate_hash()
     z.generate_hash()
 
-    #  TODO: Request feedback on style vs. other tests written
     def test_block_compare(self):
         assert block_compare(self.x, self.y)
         assert block_compare(self.y, self.x)
