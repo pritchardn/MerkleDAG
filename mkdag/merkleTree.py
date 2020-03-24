@@ -22,12 +22,7 @@ class MerkleTree:
 
     def _add_data(self, data):
         print(data)
-        if self.data is None:
-            self.data.add_data(data)
-        elif self.data != data:
-            self.data.add_data(data)
-        else:
-            return self.data.hash
+        self.data.add_data(data)
         if len(data) > 1:
             bound = len(data) // 2
             if len(data) % 2 != 0:
@@ -46,9 +41,6 @@ class MerkleTree:
     def add_data(self, data):  # Assumes data is list
         print(data)
         self._add_data(data)
-
-    def update_data(self, data):  # Assumes data is list
-        print("Help")
 
 
 def compare_mktree(x: MerkleTree, y: MerkleTree):
