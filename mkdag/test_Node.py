@@ -5,19 +5,19 @@ class TestNode:
     def test_add_data(self):
         test_node = Node()
         test_node.add_data(0)
-        assert test_node.get_data()['data'] == '0'
+        assert test_node.get_data()['data'] == 0
         test_node.add_data(1)
-        assert test_node.get_data()['data'] == '1'
+        assert test_node.get_data()['data'] == 1
         test_node.add_data([0, 1, 2])
-        assert test_node.get_data()['data'] == "[0, 1, 2]"
+        assert test_node.get_data()['data'] == [0, 1, 2]
         test_node.add_data(0, "test")
-        assert test_node.get_data()["test"] == '0'
+        assert test_node.get_data()["test"] == 0
         test_node.add_data("ABCDEFG", "txList")
-        assert test_node.get_data()["txList"] == "'ABCDEFG'"
+        assert test_node.get_data()["txList"] == "ABCDEFG"
         test_node.add_data(True, "boolTest")
-        assert test_node.get_data()["boolTest"] == "True"
+        assert test_node.get_data()["boolTest"]
         test_node.add_data(None, "nullTest")
-        assert test_node.get_data()["nullTest"] == "None"
+        assert test_node.get_data()["nullTest"] is None
 
     def test_generate_hash(self):
         assert True
