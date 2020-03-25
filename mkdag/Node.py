@@ -45,7 +45,7 @@ class Node(object):
         print(self.hash)
 
 
-def block_compare(x: Node, y: Node):  # type hints added in Python 3.8
+def node_compare(x: Node, y: Node):  # type hints added in Python 3.8
     if x.hash != y.hash:
         return False
     else:
