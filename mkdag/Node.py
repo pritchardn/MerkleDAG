@@ -1,10 +1,17 @@
 # Copyright (c) 2020 N.J. Pritchard
 # Released under Apache 2.0 License
 # Tested with 64-bit Python 3.8
+import enum
 import json
 
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes
+
+
+class HashAlg(enum.Enum):
+    SHA256 = 1
+    SHA3_256 = 2
+    MD5 = 3
 
 
 class Node(object):
@@ -13,6 +20,7 @@ class Node(object):
         self.data_serial = None
         self.digest = None
         self.hash_algorithm = hashes.SHA256()
+        self.hashtype = HashAlg.SHA256
         self.hash = None
         self.changed = False
 
@@ -25,6 +33,17 @@ class Node(object):
 
     def get_data(self):
         return self.data
+
+    def change_hashalg(self, alg: HashAlg):
+        if alg != self.hashtype and type(alg) == HashAlg:
+            self.hashtype = alg
+            self.changed = True
+            if alg == HashAlg.SHA256:
+                self.hash_algorithm = hashes.SHA256()
+            elif alg == HashAlg.SHA3_256:
+                self.hash_algorithm = hashes.SHA3_256()
+            elif alg == HashAlg.MD5:
+                self.hash_algorithm = hashes.MD5()
 
     def generate_hash(self):
         if self.changed:
