@@ -2,7 +2,7 @@
 # Released under Apache 2.0 License
 # Tested with 64-bit Python 3.8
 
-from Block import Block
+from Node import Node
 
 
 class MerkleTree:
@@ -11,7 +11,7 @@ class MerkleTree:
         self.left = None
         self.right = None
         self.parent = None
-        self.data = Block()
+        self.data = Node()
 
     def print(self):
         self.data.print()

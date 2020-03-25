@@ -5,7 +5,7 @@ from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes
 
 
-class Block(object):
+class Node(object):
     def __init__(self):
         self.data = {}
         self.data_serial = None
@@ -45,7 +45,7 @@ class Block(object):
         print(self.hash)
 
 
-def block_compare(x: Block, y: Block):  # type hints added in Python 3.8
+def block_compare(x: Node, y: Node):  # type hints added in Python 3.8
     if x.hash != y.hash:
         return False
     else:

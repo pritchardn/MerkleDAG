@@ -1,7 +1,7 @@
 # Copyright (c) 2020 N.J. Pritchard
 # Released under Apache 2.0 License
 # Tested with 64-bit Python 3.8
-from Block import *
+from Node import *
 
 
 #  TODO: Checking DAG constraints
@@ -13,7 +13,7 @@ class MerkleDAG(object):
         self.parents = []
         self.children = []
         self.child_hashes = []
-        self.data = Block()
+        self.data = Node()
 
     def print(self):
         self.data.print()

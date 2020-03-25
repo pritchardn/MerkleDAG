@@ -1,9 +1,9 @@
-from Block import Block, block_compare
+from Node import Node, block_compare
 
 
 class TestBlock:
     def test_add_data(self):
-        test_block = Block()
+        test_block = Node()
         test_block.add_data(0)
         assert test_block.get_data()['data'] == '0'
         test_block.add_data(1)
@@ -24,9 +24,9 @@ class TestBlock:
 
 
 class TestComparison:
-    x = Block()
-    y = Block()
-    z = Block()
+    x = Node()
+    y = Node()
+    z = Node()
     x.add_data("help")
     y.add_data("help")
     z.add_data("helP")
