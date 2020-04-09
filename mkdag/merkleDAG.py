@@ -1,9 +1,63 @@
 # Copyright (c) 2020 N.J. Pritchard
 # Released under Apache 2.0 License
 # Tested with 64-bit Python 3.8
-from Node import *
+import networkx as nx
+import matplotlib.pyplot as plt
+from cryptography.hazmat.backends import default_backend
+from cryptography.hazmat.primitives import hashes
+
 #  TODO: Checking DAG constraints
 
+
+class Dag2(object):
+
+    def __init__(self):
+        self.new_node_name = 0
+        self.graph = nx.DiGraph()
+        self.hash_algorithm = hashes.SHA256()
+        self.digest = None
+
+    def __generatehash__(self, node):
+        self.digest = hashes.Hash(self.hash_algorithm, backend=default_backend())
+        self.digest.update(self.graph.nodes[node]["data"])
+        new_hash = self.digest.finalize()
+        self.digest = None
+        self.graph.nodes[node]["dataHash"] = new_hash
+
+    def add_node(self, content):
+        self.graph.add_node(self.new_node_name,
+                            data=content.encode(encoding="utf-8"),
+                            dataHash=None,
+                            changed=True,
+                            name=self.new_node_name)
+        self.new_node_name += 1
+        return self.new_node_name - 1
+
+    def add_edge(self, u: int, v: int):
+        if not self.graph.has_node(u) or not self.graph.has_node(v):
+            print("Nodes do not exist yet, need to be created with content first")
+        else:
+            self.graph.add_edge(u, v)
+            self.graph.nodes[u]["changed"] = True
+            self.graph.nodes[v]["changed"] = True
+
+    def commit_graph(self):
+        if not nx.is_directed_acyclic_graph(self.graph):
+            print("Not a DAG, reconsider")
+        else:
+            for node in self.graph.nodes:  # Will result in a lot of repated work. Okay for initial implementation
+                if self.graph.nodes[node]["changed"]:
+                    for parent in self.graph.predecessors(node):
+                        self.graph.nodes[parent]["changed"] = True
+        #  TODO: Go for the DFS Implementation
+
+test = Dag2()
+x = test.add_node("Potato")
+y = test.add_node("Tomato")
+test.add_edge(x, y)
+test.commit_graph()
+nx.draw(test.graph)
+plt.show()
 
 class MerkleDAG(object):
 
