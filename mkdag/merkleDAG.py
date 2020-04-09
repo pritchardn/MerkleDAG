@@ -30,6 +30,7 @@ class MerkleDAG(object):
         self.digest = None
 
     def add_node(self, content):
+        # TODO: Switching on content type
         self.graph.add_node(self.new_node_name,
                             data=bytes(content, 'utf-8'),
                             dataHash=None,
