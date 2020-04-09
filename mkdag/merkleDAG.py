@@ -6,10 +6,8 @@ import matplotlib.pyplot as plt
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes
 
-#  TODO: Checking DAG constraints
 
-
-class Dag2(object):
+class MerkleDAG(object):
 
     def __init__(self):
         self.new_node_name = 0
@@ -17,16 +15,23 @@ class Dag2(object):
         self.hash_algorithm = hashes.SHA256()
         self.digest = None
 
-    def __generatehash__(self, node):
+    def __generate_hash__(self, node):
         self.digest = hashes.Hash(self.hash_algorithm, backend=default_backend())
-        self.digest.update(self.graph.nodes[node]["data"])
-        new_hash = self.digest.finalize()
+        # Start with my data
+        data = self.graph.nodes[node]["data"]
+
+        #  Append all descendent nodes' hashes
+        for elem in nx.descendants(self.graph, node):  # TODO: Check if deterministic
+            if not self.graph.nodes[elem]["dataHash"] is None:
+                data += self.graph.nodes[elem]["dataHash"]
+
+        self.digest.update(data)
+        self.graph.nodes[node]["dataHash"] = self.digest.finalize()
         self.digest = None
-        self.graph.nodes[node]["dataHash"] = new_hash
 
     def add_node(self, content):
         self.graph.add_node(self.new_node_name,
-                            data=content.encode(encoding="utf-8"),
+                            data=bytes(content, 'utf-8'),
                             dataHash=None,
                             changed=True,
                             name=self.new_node_name)
@@ -44,68 +49,22 @@ class Dag2(object):
     def commit_graph(self):
         if not nx.is_directed_acyclic_graph(self.graph):
             print("Not a DAG, reconsider")
-        else:
-            for node in self.graph.nodes:  # Will result in a lot of repated work. Okay for initial implementation
-                if self.graph.nodes[node]["changed"]:
-                    for parent in self.graph.predecessors(node):
-                        self.graph.nodes[parent]["changed"] = True
-        #  TODO: Go for the DFS Implementation
+            return
+        # Find reverse topological sort of graph
+        ordering = list(reversed(list(nx.topological_sort(self.graph))))
+        # Mark all nodes that will need updating
+        for elem in ordering:
+            if test.graph.nodes[elem]["changed"]:
+                for anc in nx.ancestors(test.graph, elem):
+                    test.graph.nodes[anc]["changed"] = True
+            # Hash content including children (since this is in reverse topo ordering we can do so safely)
+            self.__generate_hash__(elem)
 
-test = Dag2()
+
+test = MerkleDAG()
 x = test.add_node("Potato")
 y = test.add_node("Tomato")
 test.add_edge(x, y)
 test.commit_graph()
 nx.draw(test.graph)
 plt.show()
-
-class MerkleDAG(object):
-
-    def __init__(self):
-        self.parents = []
-        self.children = []
-        self.child_hashes = []
-        self.data = Node()
-
-    def print(self):
-        self.data.print()
-        for i in self.children:
-            i.print()
-
-    def get_hash(self):
-        return self.data.hash
-
-    def add_child(self, child):
-        if type(child) == MerkleDAG:
-            if child not in self.children:
-                self.children.append(child)
-                child.add_parent(self)
-
-    def add_parent(self, parent):
-        if type(parent) == MerkleDAG:
-            if parent not in self.parents:
-                self.parents.append(parent)
-                parent.add_child(self)
-
-    def add_data(self, data, key="data"):  # Will directly hash data and pass this value to parents
-        self.data.add_data(data, key)
-        self.data.generate_hash()
-
-    def update_hashes(self):
-        self.child_hashes = []
-        for child in self.children:
-            self.child_hashes.append(child.get_hash())
-        self.add_data(self.child_hashes, "children")
-
-    def are_siblings(self, candidate):
-        if type(candidate) == MerkleDAG:
-            if not self.parents:
-                if not candidate.parents:  # Two roots is possible
-                    return True
-                else:  # Edge case of comparing root to child
-                    return False
-            # I know this is O(n^2) but it is accurate and deterministic
-            for parent in self.parents:
-                if parent not in candidate.parents:
-                    return False
-            return True
