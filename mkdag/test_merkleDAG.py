@@ -30,14 +30,14 @@ class TestMerkleDAG:
 
     def test_add_node(self):
         self.reset_class_instances()
-        assert self.x.add_node("Normal") is not None
-        assert self.x.add_node(123) is not None
-        assert self.x.add_node(1.23) is not None
-        assert self.x.add_node(complex(1.0, 1.0)) is not None
-        assert self.x.add_node(b"Potato") is not None
-        assert self.x.add_node(bytearray("potato", 'utf-8')) is not None
-        assert self.x.add_node([1, 2, 3]) is None
-        assert self.x.add_node(["fd", "sd", 3]) is None
+        assert self.x.add_node("Normal") == 0  # Since indexing starts at 0
+        assert self.x.add_node(123)
+        assert self.x.add_node(1.23)
+        assert self.x.add_node(complex(1.0, 1.0))
+        assert self.x.add_node(b"Potato")
+        assert self.x.add_node(bytearray("potato", 'utf-8'))
+        assert self.x.add_node([1, 2, 3]) == -1
+        assert self.x.add_node(["fd", "sd", 3]) == -1
         assert len(self.x.graph.nodes) == 6
 
     def test_add_edge(self):
