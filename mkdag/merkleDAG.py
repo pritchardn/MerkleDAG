@@ -1,8 +1,8 @@
 # Copyright (c) 2020 N.J. Pritchard
 # Released under Apache 2.0 License
 # Tested with 64-bit Python 3.8
-import networkx as nx
 import matplotlib.pyplot as plt
+import networkx as nx
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes
 
@@ -27,12 +27,24 @@ class MerkleDAG(object):
 
         self.digest.update(data)
         self.graph.nodes[node]["dataHash"] = self.digest.finalize()
+        print(self.graph.nodes[node]["dataHash"])
         self.digest = None
 
+    def __create_frame__(self, content):
+        ctype = type(content)
+        if ctype == list:
+            print("Currently unsupported")
+            return None
+        elif ctype == bytes:
+            return content
+        elif ctype == bytearray:
+            return bytes(content)
+        else:
+            return bytes(repr(content), 'utf-8')
+
     def add_node(self, content):
-        # TODO: Switching on content type
         self.graph.add_node(self.new_node_name,
-                            data=bytes(content, 'utf-8'),
+                            data=self.__create_frame__(content),
                             dataHash=None,
                             changed=True,
                             name=self.new_node_name)
@@ -65,6 +77,7 @@ class MerkleDAG(object):
 test = MerkleDAG()
 x = test.add_node("Potato")
 y = test.add_node("Tomato")
+z = test.add_node(3)
 test.add_edge(x, y)
 test.commit_graph()
 nx.draw(test.graph)
