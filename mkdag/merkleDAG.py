@@ -43,6 +43,9 @@ class MerkleDAG(object):
             return bytes(repr(content), 'utf-8')
 
     def add_node(self, content):
+        data = self.__convert_data__(content)
+        if data is None:
+            return None
         self.graph.add_node(self.new_node_name,
                             data=self.__convert_data__(content),
                             dataHash=None,

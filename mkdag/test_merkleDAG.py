@@ -12,7 +12,7 @@ class TestMerkleDAG:
         self.z.__init__()
 
     def test_add_node(self):
-        self.x.add_node("Normal")
+        assert self.x.add_node("Normal")
         self.x.add_node(123)
         self.x.add_node([1, 2, 3])
         self.x.add_node(["fd", "sd", 3])
