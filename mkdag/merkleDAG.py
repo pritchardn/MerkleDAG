@@ -22,6 +22,7 @@ def convert_data(content):
 class MerkleDAG(object):
     # TODO: Remove edge
     # TODO: Remove node
+    # TODO: convert to hashlib
 
     def __init__(self):
         self.new_node_name = 0
