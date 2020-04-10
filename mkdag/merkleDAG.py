@@ -1,7 +1,6 @@
 # Copyright (c) 2020 N.J. Pritchard
 # Released under Apache 2.0 License
 # Tested with 64-bit Python 3.8
-import matplotlib.pyplot as plt
 import networkx as nx
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes
@@ -70,18 +69,12 @@ class MerkleDAG(object):
         ordering = list(reversed(list(nx.topological_sort(self.graph))))
         # Mark all nodes that will need updating
         for elem in ordering:
-            if test.graph.nodes[elem]["changed"]:
-                for anc in nx.ancestors(test.graph, elem):
-                    test.graph.nodes[anc]["changed"] = True
+            if self.graph.nodes[elem]["changed"]:
+                for anc in nx.ancestors(self.graph, elem):
+                    self.graph.nodes[anc]["changed"] = True
             # Hash content including children (since this is in reverse topo ordering we can do so safely)
             self.__generate_hash__(elem)
 
-
-test = MerkleDAG()
-x = test.add_node("Potato")
-y = test.add_node("Tomato")
-z = test.add_node(3)
-test.add_edge(x, y)
-test.commit_graph()
-nx.draw(test.graph)
-plt.show()
+# test.commit_graph()
+# nx.draw(test.graph)
+# plt.show()
