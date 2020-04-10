@@ -30,7 +30,7 @@ class MerkleDAG(object):
         print(self.graph.nodes[node]["dataHash"])
         self.digest = None
 
-    def __create_frame__(self, content):
+    def __convert_data__(self, content):
         ctype = type(content)
         if ctype == list:
             print("Currently unsupported")
@@ -44,7 +44,7 @@ class MerkleDAG(object):
 
     def add_node(self, content):
         self.graph.add_node(self.new_node_name,
-                            data=self.__create_frame__(content),
+                            data=self.__convert_data__(content),
                             dataHash=None,
                             changed=True,
                             name=self.new_node_name)
