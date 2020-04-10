@@ -1,4 +1,4 @@
-from merkleDAG import MerkleDAG
+from merkleDAG import MerkleDAG, convert_data
 
 
 def add_nodes(graph):
@@ -65,4 +65,11 @@ class TestMerkleDAG:
 
 
 def test_convert_data():
-    assert False
+    assert convert_data("Normal") is not None
+    assert convert_data(123) is not None
+    assert convert_data(1.23) is not None
+    assert convert_data(complex(1.0, 1.0)) is not None
+    assert convert_data(b"Potato") is not None
+    assert convert_data(bytearray("potato", 'utf-8')) is not None
+    assert convert_data([1, 2, 3]) is None
+    assert convert_data(["fd", "sd", 3]) is None
