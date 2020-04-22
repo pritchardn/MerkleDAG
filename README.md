@@ -33,3 +33,8 @@ Our implementation makes the following restriction:
 ## Installation on Windows
 Installing the Cryptography library can be a pain on windows platforms
 [help](https://stackoverflow.com/questions/45089805/pip-install-cryptography-in-windows)
+
+## Dependencies
+  - Networkx 
+
+Our only dependency and is used to maintain the backbone DAG structure in our MerkleDAG
