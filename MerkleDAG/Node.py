@@ -13,6 +13,13 @@ class HashAlg(enum.Enum):
 
 
 class Node(object):
+    """
+    Our own implemenetation of a data-node as a precursor to a block structure.
+    Abstracts away hash generation
+
+    TODO: Change to Hashlib
+    """
+
     def __init__(self):
         self.data = {}
         self.data_serial = None
@@ -22,10 +29,16 @@ class Node(object):
         self.hash = None
         self.changed = False
 
+    @property
     def is_empty(self):
         return self.data == {}
 
     def add_data(self, value, key="data"):
+        """
+        Adds data values blindly
+        :param value: The data
+        :param key: The internal dictionary key which can be specified if non-default behaviour is needed
+        """
         self.data[key] = value
         self.changed = True
 
@@ -33,6 +46,10 @@ class Node(object):
         return self.data
 
     def change_hashalg(self, alg: HashAlg):
+        """
+        Changes the choice of internal hash function from a set of enum
+        :param alg: A HashAlg enum
+        """
         if alg != self.hashtype and type(alg) == HashAlg:
             self.hashtype = alg
             self.changed = True
@@ -44,6 +61,9 @@ class Node(object):
                 self.hash_algorithm = hashes.MD5()
 
     def generate_hash(self):
+        """
+        Hashes the current data
+        """
         if self.changed:
             self.digest = hashes.Hash(self.hash_algorithm, backend=default_backend())
             self.data_serial = json.dumps(self.data, sort_keys=True)
@@ -58,7 +78,15 @@ class Node(object):
         print(self.hash)
 
 
-def node_compare(x: Node, y: Node):  # type hints added in Python 3.8
+def node_compare(x: Node, y: Node):
+    """
+    Compares two nodes by hash
+    :param x: The first node
+    :param y: The second node
+    :return: True if matching, false otherwise
+    """
+    if type(x) != Node or type(y) != Node:
+        raise TypeError("Need to compare Nodes")
     if x.hash != y.hash:
         return False
     else:
