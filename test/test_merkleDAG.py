@@ -1,4 +1,4 @@
-from merkleDAG import MerkleDAG, convert_data
+from MerkleDAG import MerkleDAG, convert_data
 
 
 def add_nodes(graph):

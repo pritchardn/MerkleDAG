@@ -1,4 +1,4 @@
-from merkleTree import MerkleTree, compare_mktree
+from MerkleTree import MerkleTree, compare_mktree
 
 
 class TestMerkleTree:
