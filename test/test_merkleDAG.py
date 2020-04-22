@@ -1,3 +1,4 @@
+# Copyright (c) 2020 N.J. Pritchard
 from MerkleDAG import MerkleDAG, convert_data
 
 

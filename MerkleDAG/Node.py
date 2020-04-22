@@ -1,6 +1,4 @@
 # Copyright (c) 2020 N.J. Pritchard
-# Released under Apache 2.0 License
-# Tested with 64-bit Python 3.8
 import enum
 import json
 

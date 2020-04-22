@@ -1,3 +1,4 @@
+# Copyright (c) 2020 N.J. Pritchard
 from Node import Node, node_compare, HashAlg
 
 
