@@ -23,4 +23,4 @@ Installing the Cryptography library can be a pain on windows platforms
 ## Dependencies
   - Networkx 
 
-Our only dependency and is used to maintain the backbone DAG structure in our MerkleDAG
+Our only dependency and is used to maintain the backbone DAG structure in our MerkleDAG 
