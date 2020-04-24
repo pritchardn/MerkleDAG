@@ -1,25 +1,24 @@
 # Copyright (c) 2020 N.J. Pritchard
 import networkx as nx
-from cryptography.hazmat.backends import default_backend
-from cryptography.hazmat.primitives import hashes
+import json
+import hashlib
 
 
 def convert_data(content):
     """
     Handles arbitrary data for insertion into a MerkleDAG
     :param content: Only primitives, bytes and byte-arrays are currently supported
-    :return: bytes object or None if unsupported
+    :return: JSON serialised string representation of content
     """
     ctype = type(content)
-    if ctype == list:
-        print("Currently unsupported")
-        return None
-    elif ctype == bytes:
-        return content
+    if ctype == bytes:
+        return json.dumps(content.decode(), sort_keys=True)
     elif ctype == bytearray:
-        return bytes(content)
+        return json.dumps(bytes(content).decode(), sort_keys=True)
+    elif ctype == complex:
+        return None
     else:
-        return bytes(repr(content), 'utf-8')
+        return json.dumps(content, sort_keys=True)
 
 
 class MerkleDAG(object):
@@ -34,8 +33,6 @@ class MerkleDAG(object):
     def __init__(self):
         self.new_node_name = 0
         self.graph = nx.DiGraph()
-        self.hash_algorithm = hashes.SHA256()
-        self.digest = None
 
     def __generate_hash__(self, node):
         """
@@ -44,7 +41,6 @@ class MerkleDAG(object):
         :param node: The candidate node
         :return: None
         """
-        self.digest = hashes.Hash(self.hash_algorithm, backend=default_backend())
         # Start with my data
         data = self.graph.nodes[node]["data"]
 
@@ -52,10 +48,7 @@ class MerkleDAG(object):
         for elem in nx.descendants(self.graph, node):  # TODO: Check if deterministic
             if not self.graph.nodes[elem]["dataHash"] is None:
                 data += self.graph.nodes[elem]["dataHash"]
-
-        self.digest.update(data)
-        self.graph.nodes[node]["dataHash"] = self.digest.finalize()
-        self.digest = None
+        self.graph.nodes[node]["dataHash"] = hashlib.sha3_256(data.encode('utf-8')).hexdigest()
 
     def add_node(self, content) -> int:
         """
@@ -69,7 +62,7 @@ class MerkleDAG(object):
         if data is None:
             return -1
         self.graph.add_node(self.new_node_name,
-                            data=convert_data(content),
+                            data=data,
                             dataHash=None,
                             changed=True,
                             name=self.new_node_name)
@@ -118,7 +111,3 @@ class MerkleDAG(object):
             self.__generate_hash__(elem)
             self.graph.nodes[elem]["changed"] = False
         return True
-
-# test.commit_graph()
-# nx.draw(test.graph)
-# plt.show()

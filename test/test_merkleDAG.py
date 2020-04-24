@@ -6,7 +6,7 @@ def add_nodes(graph):
     graph.add_node("Normal")
     graph.add_node(123)
     graph.add_node(1.23)
-    graph.add_node(complex(1.0, 1.0))
+    # graph.add_node(complex(1.0, 1.0))
     graph.add_node(b"Potato")
     graph.add_node(bytearray("potato", 'utf-8'))
 
@@ -34,12 +34,12 @@ class TestMerkleDAG:
         assert self.x.add_node("Normal") == 0  # Since indexing starts at 0
         assert self.x.add_node(123)
         assert self.x.add_node(1.23)
-        assert self.x.add_node(complex(1.0, 1.0))
+        assert self.x.add_node(complex(1.0, 1.0)) == -1
         assert self.x.add_node(b"Potato")
         assert self.x.add_node(bytearray("potato", 'utf-8'))
-        assert self.x.add_node([1, 2, 3]) == -1
-        assert self.x.add_node(["fd", "sd", 3]) == -1
-        assert len(self.x.graph.nodes) == 6
+        assert self.x.add_node([1, 2, 3])
+        assert self.x.add_node(["fd", "sd", 3])
+        assert len(self.x.graph.nodes) == 7
 
     def test_add_edge(self):
         self.reset_class_instances()
@@ -69,8 +69,8 @@ def test_convert_data():
     assert convert_data("Normal") is not None
     assert convert_data(123) is not None
     assert convert_data(1.23) is not None
-    assert convert_data(complex(1.0, 1.0)) is not None
+    assert convert_data(complex(1.0, 1.0)) is None
     assert convert_data(b"Potato") is not None
     assert convert_data(bytearray("potato", 'utf-8')) is not None
-    assert convert_data([1, 2, 3]) is None
-    assert convert_data(["fd", "sd", 3]) is None
+    assert convert_data([1, 2, 3]) is not None
+    assert convert_data(["fd", "sd", 3]) is not None

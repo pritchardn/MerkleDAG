@@ -1,2 +1,2 @@
 networkx>=2.4
-cryptography>=2.9.2
+pytest>=5.4.1
