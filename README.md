@@ -1,5 +1,6 @@
 # MerkleDAGs
 An implementations of a merkle-DAG in Python
+Tested with Python 3.7
 
 ## Merkle DAGs
 
